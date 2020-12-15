@@ -129,6 +129,8 @@ void MainWindow::addTreeSubChild(QTreeWidgetItem *parent, QFileInfo fileinfo)
     treeItem->setText(1, fileinfo.absoluteFilePath()); // a hidden column for keeping the absolute path
     parent->addChild(treeItem);
     ui->treeWidget_files->expandItem(treeItem);
+
+    if(fileinfo.suffix()=="txt") listannotationfiles << fileinfo.absoluteFilePath();
 }
 
 
@@ -186,8 +188,9 @@ void MainWindow::ReadLabelFile(QString labelfilename)
             keepmin(min_y,iy2);
 
             if(type=="wall") DrawRectangle(ix1,iy1,ix2,iy2,Qt::green,1);
-            if(type=="window") DrawRectangle(ix1,iy1,ix2,iy2,Qt::blue,3);
-            if(type=="door") DrawRectangle(ix1,iy1,ix2,iy2,Qt::red,3);
+            else if(type=="window") DrawRectangle(ix1,iy1,ix2,iy2,Qt::blue,3);
+            else if(type=="door") DrawRectangle(ix1,iy1,ix2,iy2,Qt::red,3);
+            else DrawRectangle(ix1,iy1,ix2,iy2,Qt::yellow,1);
 
             Add_Content_to_TreeWidget(x1,y1,x2,y2,type,z1,z2);
             line = in.readLine();
@@ -243,10 +246,10 @@ void MainWindow::DrawRectangle(int ix1, int iy1, int ix2, int iy2, QColor color,
     QPainter *painter = new QPainter(currentimage);
     QPen myPen(color, penwidth, Qt::SolidLine);
     painter->setPen(myPen);
-    //int width = abs(ix2-ix1);
-    //int height = abs(iy2-iy1);
-    //painter->drawRect(ix1,iy1,width,height);
-    painter->drawLine(ix1,iy1,ix2,iy2);
+    int width = abs(ix2-ix1);
+    int height = abs(iy2-iy1);
+    painter->drawRect(ix1,iy1,width,height);
+    //painter->drawLine(ix1,iy1,ix2,iy2);
     delete painter;
 
     // # Draw image
@@ -291,4 +294,19 @@ void MainWindow::on_treeWidget_files_itemClicked(QTreeWidgetItem *item, int colu
 
     //QString labelfilename = ui->lineEdit_filename->text();
     //
+}
+
+void MainWindow::on_Button_saveviz_2_clicked()
+{
+    foreach(QString file, listannotationfiles)
+    {
+        qDebug() << file;
+        ReadLabelFile(file);
+
+        QString imagefilename = file.section("/",6,6)+".png";
+        //qDebug() << "imagefilename: " << imagefilename;
+        currentimage->save(imagefilename,"PNG",100);
+
+
+    }
 }

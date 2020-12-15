@@ -202,6 +202,19 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="Button_saveviz_2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>10</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Generate whole image</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

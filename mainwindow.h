@@ -30,6 +30,8 @@ private slots:
 
     void on_treeWidget_files_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_Button_saveviz_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -43,6 +45,7 @@ private:
 
     QString currentlyOpenedDir;
     QPixmap *currentimage;
+    QStringList listannotationfiles;
 
     void addTreeRoot(QFileInfo fileinfo);
     void addTreeChild(QTreeWidgetItem *parent, QFileInfo fileinfo);
